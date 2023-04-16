@@ -1,0 +1,12 @@
+{
+  "name": "@lndgalante/fast-dns",
+  "version": "0.0.7",
+  "bin": "app.js",
+  "license": "MIT",
+  "author": "Leonardo Galante",
+  "dependencies": {
+    "@clack/prompts": "^0.6.3",
+    "ts-pattern": "^4.2.2",
+    "zod": "^3.21.4"
+  }
+}
