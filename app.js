@@ -9,13 +9,15 @@ import { intro, outro, select, multiselect, text, cancel } from '@clack/prompts'
 // constants
 const CLOUDFARE_DNS = ['1.1.1.1', '1.0.0.1', '2606:4700:4700::1111', '2606:4700:4700::1001'];
 
+const ALL_NETWORK_SERVICES = { value: 'all', label: 'Select all' };
+
 // common utils
 function execute(command) {
   return execSync(command).toString().trim();
 }
 
 function getClarkPromptStructureForSelect(array) {
-  return array.map((value) => ({ value, label: value }));
+  return [ALL_NETWORK_SERVICES, ...array.map((value) => ({ value, label: value }))];
 }
 
 // network utils
@@ -78,8 +80,12 @@ async function main() {
     });
     invariant(Array.isArray(selectedNetworkServices), 'You need to select at least one network service');
 
+    const parsedSelectedNetworkServices = selectedNetworkServices.includes(ALL_NETWORK_SERVICES.value)
+      ? networkServices
+      : selectedNetworkServices.filter((value) => value !== ALL_NETWORK_SERVICES.value);
+
     // 3. Set DNS on Network Services
-    for (const selectedNetworkService of selectedNetworkServices) {
+    for (const selectedNetworkService of parsedSelectedNetworkServices) {
       setDnsToNetworkService(selectedNetworkService, dnsSelected);
     }
 
